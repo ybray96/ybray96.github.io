@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden;">
+    <div>
+      <p>Test</p>
+    </div>
+    <a-scene embedded arjs>
+      <a-marker type="pattern" url="https://cdn.glitch.global/1d271f5a-a202-48a8-9446-f766ef6b1dd7/pattern-glitch.patt?v=1724404187570">
+        <a-entity
+          position="0 0 0"
+          scale="0.05 0.05 0.05"
+         
+         gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+        ></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
