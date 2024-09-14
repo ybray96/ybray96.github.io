@@ -25,6 +25,8 @@
 
 			import * as THREE from './build/three.module.js';
 			import { ARButton } from './jsm/webxr/ARButton.js';
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+
 
 			let container;
 			let camera, scene, renderer;
@@ -39,16 +41,14 @@
 
 			function init() {
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+				let model;
+				const loader = new GLTFLoader();
 
-				scene = new THREE.Scene();
-
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 20 );
-
-				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 3 );
-				light.position.set( 0.5, 1, 0.25 );
-				scene.add( light );
+				loader.load( 'cake_1_-_maison_alyzee.glb', function ( gltf ) {
+					model = gltf.scene;
+					model.visible = false;
+					scene.add( model );
+				});
 
 				//
 
@@ -69,14 +69,11 @@
 
 				function onSelect() {
 
-					if ( reticle.visible ) {
-
-						const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-						const mesh = new THREE.Mesh( geometry, material );
-						reticle.matrix.decompose( mesh.position, mesh.quaternion, mesh.scale );
-						mesh.scale.y = Math.random() * 2 + 1;
-						scene.add( mesh );
-
+					if ( reticle.visible && model ) {
+						const newModel = model.clone();
+						reticle.matrix.decompose( newModel.position, newModel.quaternion, newModel.scale );
+						newModel.scale.set(0.5, 0.5, 0.5);  // Можно настроить размер модели
+						scene.add( newModel );
 					}
 
 				}
