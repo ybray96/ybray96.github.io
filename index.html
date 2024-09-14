@@ -9,7 +9,7 @@
 	<body>
 
 		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js111111111</a> ar - hit test<br/>(Chrome Android 81+)
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js111111111Bur</a> ar - hit test<br/>(Chrome Android 81+)
 		</div>
 
 		<script type="importmap">
@@ -44,11 +44,7 @@
 				let model;
 				const loader = new GLTFLoader();
 
-				loader.load( 'cake_1_-_maison_alyzee.glb', function ( gltf ) {
-					model = gltf.scene;
-					model.visible = false;
-					scene.add( model );
-				});
+				
 
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
@@ -59,8 +55,14 @@
 
 				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 3 );
 				light.position.set( 0.5, 1, 0.25 );
-				scene.add( model );
-
+				//scene.add( model );
+				loader.load('burger_realistic_free.glb', function ( gltf ) {
+					model = gltf.scene;
+					model.visible = false;  // Скрываем модель до того момента, как она будет размещена
+					scene.add( model );
+				}, undefined, function ( error ) {
+					console.error( 'An error happened while loading the model', error );
+				});
 				//
 
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
@@ -83,7 +85,7 @@
 					if ( reticle.visible && model ) {
 						const newModel = model.clone();
 						reticle.matrix.decompose( newModel.position, newModel.quaternion, newModel.scale );
-						newModel.scale.set(10, 10, 10);  // Можно настроить размер модели
+						newModel.scale.set(1, 1, 1);  // Можно настроить размер модели
 						scene.add( newModel );
 					}
 
