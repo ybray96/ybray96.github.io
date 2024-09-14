@@ -9,7 +9,7 @@
 	<body>
 
 		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js111111111Bur</a> ar - hit test<br/>(Chrome Android 81+)
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js111111</a> ar - hit test<br/>(Chrome Android 81+)
 		</div>
 
 		<script type="importmap">
@@ -27,7 +27,6 @@
 			import { ARButton } from './jsm/webxr/ARButton.js';
 			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
 
-
 			let container;
 			let camera, scene, renderer;
 			let controller;
@@ -40,10 +39,6 @@
 			init();
 
 			function init() {
-
-				let model;
-				const loader = new GLTFLoader();
-
 				
 
 				container = document.createElement( 'div' );
@@ -55,14 +50,8 @@
 
 				const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 3 );
 				light.position.set( 0.5, 1, 0.25 );
-				//scene.add( model );
-				loader.load('burger_realistic_free.glb', function ( gltf ) {
-					model = gltf.scene;
-					model.visible = false;  // Скрываем модель до того момента, как она будет размещена
-					scene.add( model );
-				}, undefined, function ( error ) {
-					console.error( 'An error happened while loading the model', error );
-				});
+				scene.add( light );
+
 				//
 
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
@@ -77,15 +66,26 @@
 				document.body.appendChild( ARButton.createButton( renderer, { requiredFeatures: [ 'hit-test' ] } ) );
 
 				//
+				let model;
+				const loader = new GLTFLoader();
+
+				loader.load( 'burger_realistic_free.glb', function ( gltf ) {
+					model = gltf.scene;
+					model.visible = false;  // Скрываем модель до того момента, как она будет размещена
+					scene.add( model );
+				}, undefined, function ( error ) {
+					console.error( 'An error happened while loading the model', error );
+				});
 
 				const geometry = new THREE.CylinderGeometry( 0.1, 0.1, 0.2, 32 ).translate( 0, 0.1, 0 );
 
 				function onSelect() {
 
+					
 					if ( reticle.visible && model ) {
-						const newModel = model.clone();
+						const newModel = model.clone();  // Клонируем модель для каждого размещения
 						reticle.matrix.decompose( newModel.position, newModel.quaternion, newModel.scale );
-						newModel.scale.set(1, 1, 1);  // Можно настроить размер модели
+						newModel.scale.set(1, 1, 1);  // Можешь настроить размер модели
 						scene.add( newModel );
 					}
 
